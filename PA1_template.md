@@ -19,19 +19,25 @@ Here, we calculate the total number of steps taken per day
 SumOfStepsPerDay <- tapply(data$steps, as.factor(data$date), sum, na.rm = TRUE)
 ```
 
-1. Make a histogram of the total number of steps taken each day
+
+
+
+1 Make a histogram of the total number of steps taken each day
 
 ```r
 ## Make a histogram of the total number of steps taken each day
-hist(SumOfStepsPerDay, main = "Histogram of Total Number of Steps Per Day", xlab = "Total Number of Steps Per Day")
+hist(SumOfStepsPerDay, main = "Histogram of Total Number of Steps Taken Each Day", xlab = "Total Number of Steps Per Day")
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
-2. Calculate mean and median of the total number of steps taken each day
+
+
+
+2 Calculate mean and median of the total number of steps taken each day
 
 ```r
-## Calculate mean and median of the total number of steps taken each da
+## Calculate mean and median of the total number of steps taken each day
 MeanStep <- mean(SumOfStepsPerDay)
 MedianStep <- median(SumOfStepsPerDay)
 MeanStep
@@ -61,7 +67,8 @@ Here, we calculate the average number of steps taken in the 5-minutes interval
 AverageSteps <- tapply(data$steps, as.factor(data$interval), mean, na.rm = TRUE)
 ```
 
-1. Make a time series plot
+
+1 Make a time series plot
 
 
 ```r
@@ -71,7 +78,9 @@ plot(Interval, AverageSteps, type = "l", main = "Average Number of Steps Taken i
 
 ![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
 
-2. Find the 5-minute interval contains the maximum number of steps on average across all the days in dateset
+
+
+2 Find the 5-minute interval contains the maximum number of steps on average across all the days in dateset
 
 
 ```r
@@ -88,7 +97,8 @@ Thus, the 5-minute interval, which contains the maximum number of steps, is 835.
 
 ## Imputing missing values
 
-1. Calculate and report the total number of missing values in the dataset with the avrage
+
+1 Calculate and report the total number of missing values in the dataset 
 
 
 ```r
@@ -102,7 +112,8 @@ Len
 
 Total number of missing values in the date set is 2304
 
-2. Devise a strategy for filling in all of the missing values in the dataset.
+
+2 Devise a strategy for filling in all of the missing values in the dataset.
 
 I used the average number of steps taken in the 5-minutes interval to fill in the missing values. There are three steps to implement this strategy:
 
@@ -115,7 +126,7 @@ I used the average number of steps taken in the 5-minutes interval to fill in th
 The specific implementation code is shown below.
 
 
-3. Create a new dataset that is equal to the original dataset but with the missing data filled in
+3 Create a new dataset that is equal to the original dataset but with the missing data filled in
 
 
 ```r
@@ -178,7 +189,7 @@ Thus, the means and medians for the two cases are different. However, for in the
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+1 Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 
 ```r
@@ -192,7 +203,8 @@ weekday <- as.factor(ifelse(day %in% c("Saturday","Sunday"), "Weekend", "Weekday
 data_new <- data.frame(data_new, weekday)
 ```
 
-2. Make a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+
+2 Make a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 
 
 ```r
@@ -203,6 +215,9 @@ attach(data_new)
 ## The following object is masked _by_ .GlobalEnv:
 ## 
 ##     weekday
+## The following objects are masked from data_new (position 4):
+## 
+##     date, interval, steps, weekday
 ```
 
 ```r
@@ -212,13 +227,6 @@ aggdata <-aggregate(data_new$steps, by=list(interval,weekday), FUN=mean, na.rm=T
 colnames(aggdata) <- c("interval", "weekday", "steps")
 
 library(ggplot2)
-```
-
-```
-## Warning: package 'ggplot2' was built under R version 3.1.1
-```
-
-```r
 qplot(interval, steps, data=aggdata, facets = weekday~., geom = "line",main = "Average Number of Steps Taken in 5-minute Interval", xlab = "Interval", ylab = "Average Number of Steps")
 ```
 
